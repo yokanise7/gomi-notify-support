@@ -17,6 +17,7 @@
       </a>
       <nav class="nav-links" aria-label="ページ内メニュー">
         <a href="#help">使い方</a>
+        <a href="#csv">CSV例</a>
         <a href="#faq">よくある質問</a>
         <a href="privacy.html">プライバシー</a>
       </nav>
@@ -110,6 +111,45 @@
       </p>
     </section>
 
+
+    <section class="section fade-in" id="csv">
+      <h2>CSVファイルの形式</h2>
+      <p>
+        CSVファイルは、1行目に見出しを入れ、2行目以降に収集予定を記載します。
+        文字コードはUTF-8を推奨します。
+      </p>
+
+      <div class="card">
+        <h3>必要な列</h3>
+        <p><strong>日付,ゴミ種類,分別メモ</strong></p>
+      </div>
+
+      <h3>記入例</h3>
+      <pre class="code-block"><code>日付,ゴミ種類,分別メモ
+2026-07-01,燃えるごみ,生ごみ・紙くずなど
+2026-07-03,プラマーク,プラマークの付いた容器包装
+2026-07-08,燃えないごみ,小型金属・陶器類
+2026-07-10,ペットボトル,キャップとラベルを外す
+2026-07-15,古紙,新聞・雑誌・段ボール</code></pre>
+
+      <h3>入力するときの注意</h3>
+      <ul class="check-list">
+        <li>日付は <strong>YYYY-MM-DD</strong> 形式で入力してください。</li>
+        <li>同じ日に複数のごみがある場合は、ごみの種類ごとに行を分けてください。</li>
+        <li>分別メモを使わない場合でも、列自体は残してください。</li>
+        <li>セル内にカンマを含める場合は、そのセルをダブルクォーテーションで囲んでください。</li>
+        <li>保存時はUTF-8形式のCSVを選んでください。</li>
+      </ul>
+
+      <div class="note">
+        収集日や分別方法は自治体によって異なります。CSVを作成する際は、自治体の公式収集カレンダーをご確認ください。
+      </div>
+
+      <div class="hero-actions">
+        <a class="button" href="sample.csv" download>CSV記入例をダウンロード</a>
+      </div>
+    </section>
+
     <section class="section fade-in" id="faq">
       <h2>通知が届かないとき</h2>
       <ol class="check-list">
@@ -165,7 +205,7 @@
           </p>
           <p class="meta">返信にはお時間をいただく場合があります。</p>
         </div>
-        <a class="button" href="mailto:crew.alarm.app2026@gmail.com">メールで問い合わせる</a>
+        <a class="button" href="mailto:yokanise.7@gmail.com">メールで問い合わせる</a>
       </div>
     </section>
   </main>
@@ -178,4 +218,3 @@
   </footer>
 </body>
 </html>
-
