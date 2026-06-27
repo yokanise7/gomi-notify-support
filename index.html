@@ -18,6 +18,7 @@
       <nav class="nav-links" aria-label="ページ内メニュー">
         <a href="#help">使い方</a>
         <a href="#csv">CSV例</a>
+        <a href="#ai-csv">AIで作成</a>
         <a href="#faq">よくある質問</a>
         <a href="privacy.html">プライバシー</a>
       </nav>
@@ -150,6 +151,116 @@
       </div>
     </section>
 
+
+    <section class="section fade-in" id="ai-csv">
+      <h2>AIを使ってCSVを作成する</h2>
+      <p>
+        自治体のごみ収集カレンダーがPDFや画像で公開されている場合は、
+        ファイルを読み取れるAIサービスを使ってCSVを作成する方法もあります。
+      </p>
+
+      <ol class="check-list">
+        <li>自治体公式サイトから、ごみ収集カレンダーのPDFまたは画像を保存します。</li>
+        <li>このページの「CSV記入例」をダウンロードします。</li>
+        <li>AIへ収集カレンダーとCSV記入例を添付します。</li>
+        <li>下記の指示文をコピーしてAIへ送ります。</li>
+        <li>作成されたCSVを保存し、「ごみの日通知」で読み込みます。</li>
+        <li>読み込み後の予定を、自治体の公式カレンダーと照合します。</li>
+      </ol>
+
+      <div class="note">
+        <strong>重要：</strong>
+        AIが日付、曜日、地区、祝日、年末年始の予定を読み違えることがあります。
+        作成されたCSVをそのまま信用せず、アプリへ登録する前後に必ず自治体の公式情報と照合してください。
+        本アプリおよび開発者は、外部のAIサービスが作成した内容の正確性を保証できません。
+      </div>
+
+      <h3>基本の指示文</h3>
+      <p>以下をコピーして、収集カレンダーと <code>sample.csv</code> を添付したAIへ送ってください。</p>
+
+      <div class="prompt-box">
+        <button class="copy-button" type="button" data-copy-target="ai-basic-prompt">指示文をコピー</button>
+        <pre class="code-block" id="ai-basic-prompt"><code>添付した自治体のごみ収集カレンダーを読み取り、「ごみの日通知」で読み込めるCSVファイルを作成してください。
+
+添付した sample.csv と同じ列名・列順・文字コードで作成してください。
+
+【CSVの形式】
+
+列名：
+日付,ゴミ種類,分別メモ
+
+【作成ルール】
+
+1. 1行目は必ず次の見出しにしてください。
+
+日付,ゴミ種類,分別メモ
+
+2. 日付は必ず YYYY-MM-DD 形式にしてください。
+
+例：
+2026-07-01
+
+3. 同じ日に複数のごみ種類がある場合は、ごみ種類ごとに別の行にしてください。
+
+4. 自治体のカレンダーに記載されているごみ種類の名称を、できるだけそのまま使用してください。
+
+5. 分別方法や注意事項が記載されている場合は「分別メモ」へ入力してください。
+
+6. 分別メモがない場合は、空欄にしてください。推測で説明を追加しないでください。
+
+7. 年末年始、祝日、振替収集、収集中止などの例外日程を見落とさないようにしてください。
+
+8. 画像や文字が不鮮明で日程を判断できない箇所は推測せず、「確認が必要な箇所」として別に一覧で知らせてください。
+
+9. カレンダーに記載されていない日付やごみ種類を追加しないでください。
+
+10. CSV内に説明文やMarkdownの記号を入れないでください。
+
+11. CSVファイルはUTF-8で保存してください。
+
+【出力内容】
+
+次の2つを出力してください。
+
+・「ごみの日通知」で読み込めるCSVファイル
+・読み取りに自信がない箇所、例外日程、確認が必要な箇所の一覧
+
+CSVを作成した後、元のカレンダーとCSVをもう一度照合し、日付、ごみ種類、祝日変更、年末年始の予定に誤りがないか確認してください。</code></pre>
+      </div>
+
+      <h3>複数の地区が載っている場合</h3>
+      <p>自治体のカレンダーに複数地区が掲載されている場合は、次の文を追加してください。</p>
+
+      <div class="prompt-box">
+        <button class="copy-button" type="button" data-copy-target="ai-area-prompt">追加文をコピー</button>
+        <pre class="code-block" id="ai-area-prompt"><code>添付したごみ収集カレンダーのうち、「○○地区」または「○○町」の予定だけを読み取ってください。
+
+ほかの地区の予定はCSVに含めないでください。
+
+対象期間は2026年4月1日から2027年3月31日までです。
+
+地区名や対象期間を判別できない場合は、推測せず作業を止めて質問してください。</code></pre>
+      </div>
+
+      <h3>「毎週○曜日」「第○曜日」と書かれている場合</h3>
+      <p>日付が一つずつ書かれていないカレンダーでは、次の文も追加してください。</p>
+
+      <div class="prompt-box">
+        <button class="copy-button" type="button" data-copy-target="ai-repeat-prompt">追加文をコピー</button>
+        <pre class="code-block" id="ai-repeat-prompt"><code>「毎週月曜日」「第1・第3水曜日」などの繰り返し指定は、対象期間内の実際の日付へ展開して、1日につき1行のCSVにしてください。
+
+祝日や年末年始の変更日が記載されている場合は、通常の曜日規則より例外日程を優先してください。
+
+「第1水曜日」は、その月の1日から7日までにある水曜日として計算してください。
+「第2水曜日」以降も同じ方法で正確に計算してください。</code></pre>
+      </div>
+
+      <div class="note">
+        自治体が一般公開している収集カレンダーを使い、個人情報が含まれるファイルはAIへアップロードしないでください。
+        利用するAIサービスのプライバシーポリシーもご確認ください。
+      </div>
+    </section>
+
     <section class="section fade-in" id="faq">
       <h2>通知が届かないとき</h2>
       <ol class="check-list">
@@ -216,5 +327,26 @@
       <p>© 2026 ごみの日通知</p>
     </div>
   </footer>
+
+  <script>
+    document.querySelectorAll(".copy-button").forEach((button) => {
+      button.addEventListener("click", async () => {
+        const target = document.getElementById(button.dataset.copyTarget);
+        if (!target) return;
+
+        try {
+          await navigator.clipboard.writeText(target.innerText);
+          const original = button.textContent;
+          button.textContent = "コピーしました";
+          setTimeout(() => {
+            button.textContent = original;
+          }, 1800);
+        } catch {
+          window.prompt("以下をコピーしてください", target.innerText);
+        }
+      });
+    });
+  </script>
+
 </body>
 </html>
